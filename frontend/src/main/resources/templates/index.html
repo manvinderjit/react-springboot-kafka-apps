@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Kafka Event Producer</title>
+</head>
+<body>
+    <h1>Send Ad Events to Kafka</h1>
+
+    <form action="/send-event" method="post">
+        <button type="submit" name="eventType" value="ad_viewed">Send Ad Viewed</button>
+        <button type="submit" name="eventType" value="ad_clicked">Send Ad Clicked</button>
+        <button type="submit" name="eventType" value="ad_closed">Send Ad Closed</button>
+    </form>
+
+    <p th:text="${message}"></p>
+</body>
+</html>

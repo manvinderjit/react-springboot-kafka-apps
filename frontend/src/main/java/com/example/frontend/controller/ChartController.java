@@ -40,4 +40,15 @@ public class ChartController {
 
         return "chart"; // Will resolve to chart.html
     }
+
+    @GetMapping("/data")
+    public String showRawEvents(Model model) {
+        ResponseEntity<AdEvent[]> response = restTemplate.getForEntity(backendUrl, AdEvent[].class);
+        AdEvent[] events = response.getBody();
+        model.addAttribute("events", Arrays.asList(events));
+        return "data";
+    }
+
+    
+
 }

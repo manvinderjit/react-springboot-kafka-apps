@@ -1,22 +1,26 @@
 package com.example.frontend.model;
 
+import java.time.Instant;
+
 public class AdEvent {
-    private String adId;
+    private int id;
     private String eventType;
+    private Instant timestamp;
 
     public AdEvent() {}
 
-    public AdEvent(String adId, String eventType) {
-        this.adId = adId;
+    public AdEvent(int id, String eventType, Instant timestamp) {
+        this.id = id;
         this.eventType = eventType;
+        this.timestamp = timestamp;
     }
 
-    public String getAdId() {
-        return adId;
+    public int getId() {
+        return id;
     }
 
-    public void setAdId(String adId) {
-        this.adId = adId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getEventType() {
@@ -25,5 +29,13 @@ public class AdEvent {
 
     public void setEventType(String eventType) {
         this.eventType = eventType;
+    }
+
+    public Instant getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Instant timestamp) {
+        this.timestamp = timestamp;
     }
 }

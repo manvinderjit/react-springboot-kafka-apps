@@ -16,6 +16,10 @@ public class AdEvent {
 
     private String eventType;
     private Instant timestamp;
+    private Long adId;
+    private String adTitle;
+    private String adCompany;
+    private String adCategory;
 
     // Getters and setters
 
@@ -41,5 +45,37 @@ public class AdEvent {
 
     public void setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public Long getAdId() {
+        return adId;
+    }
+
+    public void setAdId(Long adId) {
+        this.adId = adId;
+    }
+
+    public String getAdTitle() {
+        return adTitle;
+    }
+
+    public void setAdTitle(String adTitle) {
+        this.adTitle = adTitle;
+    }
+
+    public String getAdCompany() {
+        return adCompany;
+    }
+
+    public void setAdCompany(String adCompany) {
+        this.adCompany = adCompany;
+    }
+
+    public String getAdCategory() {
+        return adCategory;
+    }
+
+    public void setAdCategory(String adCategory) {
+        this.adCategory = adCategory;
     }
 }

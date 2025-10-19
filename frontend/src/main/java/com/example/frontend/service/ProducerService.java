@@ -15,6 +15,14 @@ public class ProducerService {
     }    
 
     public void sendEvent(String eventType) {
+        sendEvent(eventType, null, null);
+    }
+
+    public void sendEvent(String eventType, Long adId, String adTitle) {
+        sendEvent(eventType, adId, adTitle, null, null);
+    }
+
+    public void sendEvent(String eventType, Long adId, String adTitle, String adCompany, String adCategory) {
         String topic = switch (eventType) {
             case "ad_viewed" -> "ad_viewed";
             case "ad_clicked" -> "ad_clicked";
@@ -22,11 +30,30 @@ public class ProducerService {
             default -> throw new IllegalArgumentException("Unknown event type: " + eventType);
         };
 
-        String eventJson = String.format(
-                "{\"eventType\":\"%s\", \"timestamp\":\"%s\"}",
-                eventType,
-                Instant.now().toString()
-        );
+        String eventJson;
+        if (adId != null && adTitle != null) {
+            StringBuilder jsonBuilder = new StringBuilder();
+            jsonBuilder.append("{\"eventType\":\"").append(eventType).append("\"");
+            jsonBuilder.append(", \"timestamp\":\"").append(Instant.now().toString()).append("\"");
+            jsonBuilder.append(", \"adId\":").append(adId);
+            jsonBuilder.append(", \"adTitle\":\"").append(adTitle.replace("\"", "\\\"")).append("\"");
+            
+            if (adCompany != null) {
+                jsonBuilder.append(", \"adCompany\":\"").append(adCompany.replace("\"", "\\\"")).append("\"");
+            }
+            if (adCategory != null) {
+                jsonBuilder.append(", \"adCategory\":\"").append(adCategory.replace("\"", "\\\"")).append("\"");
+            }
+            
+            jsonBuilder.append("}");
+            eventJson = jsonBuilder.toString();
+        } else {
+            eventJson = String.format(
+                    "{\"eventType\":\"%s\", \"timestamp\":\"%s\"}",
+                    eventType,
+                    Instant.now().toString()
+            );
+        }
 
         kafkaTemplate.send(topic, eventJson);
         System.out.println("Sent event to topic [" + topic + "]: " + eventJson);

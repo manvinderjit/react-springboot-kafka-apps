@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 
 import java.util.Map;
 import java.util.Arrays;
@@ -29,16 +31,57 @@ public class ChartController {
 
     @GetMapping("/chart")
     public String showChart(Model model) {
-        ResponseEntity<AdEvent[]> response = restTemplate.getForEntity(backendUrl, AdEvent[].class);
-        AdEvent[] events = response.getBody();
+        try {
+            // Get base URL by removing the specific endpoint
+            String baseUrl = backendUrl.replace("/api/events", "");
+            
+            // Get event type counts
+            ResponseEntity<Map<String, Long>> eventTypeResponse = restTemplate.exchange(
+                baseUrl + "/api/events/counts",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<Map<String, Long>>() {}
+            );
+            Map<String, Long> eventTypeCounts = eventTypeResponse.getBody();
 
-        Map<String, Long> eventCounts = Arrays.stream(events)
-            .collect(Collectors.groupingBy(AdEvent::getEventType, Collectors.counting()));
+            // Get ad performance data
+            ResponseEntity<Map<String, Long>> adPerformanceResponse = restTemplate.exchange(
+                baseUrl + "/api/events/top-ads",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<Map<String, Long>>() {}
+            );
+            Map<String, Long> topAds = adPerformanceResponse.getBody();
 
-        model.addAttribute("labels", eventCounts.keySet());
-        model.addAttribute("data", eventCounts.values());
+            // Get detailed analytics by ad
+            ResponseEntity<Map<String, Map<String, Long>>> analyticsResponse = restTemplate.exchange(
+                baseUrl + "/api/events/analytics/by-ad",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<Map<String, Map<String, Long>>>() {}
+            );
+            Map<String, Map<String, Long>> adAnalytics = analyticsResponse.getBody();
 
-        return "chart"; // Will resolve to chart.html
+            model.addAttribute("eventTypeLabels", eventTypeCounts != null ? eventTypeCounts.keySet() : java.util.Collections.emptySet());
+            model.addAttribute("eventTypeData", eventTypeCounts != null ? eventTypeCounts.values() : java.util.Collections.emptyList());
+            model.addAttribute("topAdLabels", topAds != null ? topAds.keySet() : java.util.Collections.emptySet());
+            model.addAttribute("topAdData", topAds != null ? topAds.values() : java.util.Collections.emptyList());
+            model.addAttribute("adAnalytics", adAnalytics != null ? adAnalytics : java.util.Collections.emptyMap());
+
+            return "chart";
+        } catch (Exception e) {
+            // Log the error and provide empty data
+            System.err.println("Error fetching analytics data: " + e.getMessage());
+            e.printStackTrace();
+            
+            model.addAttribute("eventTypeLabels", java.util.Collections.emptySet());
+            model.addAttribute("eventTypeData", java.util.Collections.emptyList());
+            model.addAttribute("topAdLabels", java.util.Collections.emptySet());
+            model.addAttribute("topAdData", java.util.Collections.emptyList());
+            model.addAttribute("adAnalytics", java.util.Collections.emptyMap());
+            
+            return "chart";
+        }
     }
 
     @GetMapping("/data")
@@ -48,7 +91,4 @@ public class ChartController {
         model.addAttribute("events", Arrays.asList(events));
         return "data";
     }
-
-    
-
 }

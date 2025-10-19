@@ -30,6 +30,14 @@ public class ConsumerService {
             event.setEventType(eventType);
             event.setTimestamp(timestamp);
 
+            // Handle optional ad information
+            if (json.has("adId")) {
+                event.setAdId(json.getLong("adId"));
+            }
+            if (json.has("adTitle")) {
+                event.setAdTitle(json.getString("adTitle"));
+            }
+
             repository.save(event);
             System.out.printf("Saved event from topic [%s]: %s%n", topic, message);
         } catch (Exception e) {

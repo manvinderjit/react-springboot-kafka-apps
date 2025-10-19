@@ -15,6 +15,10 @@ public class ProducerService {
     }    
 
     public void sendEvent(String eventType) {
+        sendEvent(eventType, null, null);
+    }
+
+    public void sendEvent(String eventType, Long adId, String adTitle) {
         String topic = switch (eventType) {
             case "ad_viewed" -> "ad_viewed";
             case "ad_clicked" -> "ad_clicked";
@@ -22,11 +26,22 @@ public class ProducerService {
             default -> throw new IllegalArgumentException("Unknown event type: " + eventType);
         };
 
-        String eventJson = String.format(
-                "{\"eventType\":\"%s\", \"timestamp\":\"%s\"}",
-                eventType,
-                Instant.now().toString()
-        );
+        String eventJson;
+        if (adId != null && adTitle != null) {
+            eventJson = String.format(
+                    "{\"eventType\":\"%s\", \"timestamp\":\"%s\", \"adId\":%d, \"adTitle\":\"%s\"}",
+                    eventType,
+                    Instant.now().toString(),
+                    adId,
+                    adTitle.replace("\"", "\\\"")
+            );
+        } else {
+            eventJson = String.format(
+                    "{\"eventType\":\"%s\", \"timestamp\":\"%s\"}",
+                    eventType,
+                    Instant.now().toString()
+            );
+        }
 
         kafkaTemplate.send(topic, eventJson);
         System.out.println("Sent event to topic [" + topic + "]: " + eventJson);

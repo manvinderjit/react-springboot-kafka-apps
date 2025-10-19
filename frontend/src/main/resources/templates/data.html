@@ -71,6 +71,8 @@
             <tr>
                 <th>ID</th>
                 <th>Event Type</th>
+                <th>Ad ID</th>
+                <th>Ad Title</th>
                 <th>Timestamp</th>
             </tr>
         </thead>
@@ -78,6 +80,8 @@
             <tr th:each="event : ${events}">
                 <td th:text="${event.id}">ID</td>
                 <td th:text="${event.eventType}">EventType</td>
+                <td th:text="${event.adId != null ? event.adId : 'N/A'}">Ad ID</td>
+                <td th:text="${event.adTitle != null ? event.adTitle : 'N/A'}">Ad Title</td>
                 <td th:text="${#temporals.format(event.timestamp, 'yyyy-MM-dd HH:mm:ss')}">Timestamp</td>
             </tr>
         </tbody>

@@ -177,21 +177,20 @@
 
       .navigation {
         text-align: center;
-        margin-top: 3rem;
-        padding-top: 2rem;
-        border-top: 1px solid #ddd;
+        margin-bottom: 2rem;
       }
 
       .navigation a {
         display: inline-block;
         margin: 0 1rem;
-        padding: 1rem 2rem;
+        padding: 0.75rem 1.5rem;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
         text-decoration: none;
         border-radius: 8px;
         font-weight: 600;
         transition: transform 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       }
 
       .navigation a:hover {
@@ -229,6 +228,11 @@
     </div>
 
     <div class="container">
+      <div class="navigation">
+        <a href="/chart">📈 View Analytics</a>
+        <a href="/data">📋 View Raw Data</a>
+      </div>
+
       <div class="stats-banner">
         <h3>📊 Real-time Ad Event Tracking System</h3>
         <p>
@@ -272,6 +276,8 @@
                 <input type="hidden" name="eventType" value="ad_viewed" />
                 <input type="hidden" name="adId" th:value="${ad.id}" />
                 <input type="hidden" name="adTitle" th:value="${ad.title}" />
+                <input type="hidden" name="adCompany" th:value="${ad.company}" />
+                <input type="hidden" name="adCategory" th:value="${ad.category}" />
                 <button type="submit" class="btn btn-primary">👁️ View</button>
               </form>
 
@@ -283,6 +289,8 @@
                 <input type="hidden" name="eventType" value="ad_clicked" />
                 <input type="hidden" name="adId" th:value="${ad.id}" />
                 <input type="hidden" name="adTitle" th:value="${ad.title}" />
+                <input type="hidden" name="adCompany" th:value="${ad.company}" />
+                <input type="hidden" name="adCategory" th:value="${ad.category}" />
                 <button type="submit" class="btn btn-success">🖱️ Click</button>
               </form>
 
@@ -296,17 +304,15 @@
                 <input type="hidden" name="eventType" value="ad_closed" />
                 <input type="hidden" name="adId" th:value="${ad.id}" />
                 <input type="hidden" name="adTitle" th:value="${ad.title}" />
-                <button type="submit" class="btn btn-danger">❌ Close</button>
+                <input type="hidden" name="adCompany" th:value="${ad.company}" />
+                <input type="hidden" name="adCategory" th:value="${ad.category}" />
+                <button type="submit" class="btn btn-danger">✕ Close</button>
               </form>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="navigation">
-        <a href="/chart">📈 View Analytics</a>
-        <a href="/data">📋 View Raw Data</a>
-      </div>
     </div>
 
     <script>

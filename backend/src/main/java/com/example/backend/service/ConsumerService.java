@@ -37,6 +37,12 @@ public class ConsumerService {
             if (json.has("adTitle")) {
                 event.setAdTitle(json.getString("adTitle"));
             }
+            if (json.has("adCompany")) {
+                event.setAdCompany(json.getString("adCompany"));
+            }
+            if (json.has("adCategory")) {
+                event.setAdCategory(json.getString("adCategory"));
+            }
 
             repository.save(event);
             System.out.printf("Saved event from topic [%s]: %s%n", topic, message);

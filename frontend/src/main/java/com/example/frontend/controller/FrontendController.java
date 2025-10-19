@@ -40,8 +40,10 @@ public class FrontendController {
     public String sendAdEvent(@RequestParam("eventType") String eventType, 
                              @RequestParam("adId") Long adId,
                              @RequestParam("adTitle") String adTitle,
+                             @RequestParam(value = "adCompany", required = false) String adCompany,
+                             @RequestParam(value = "adCategory", required = false) String adCategory,
                              Model model) {
-        producerService.sendEvent(eventType, adId, adTitle);
+        producerService.sendEvent(eventType, adId, adTitle, adCompany, adCategory);
         model.addAttribute("message", "Ad " + eventType.replace("ad_", "") + ": " + adTitle);
         List<Ad> ads = adService.getAllAds();
         model.addAttribute("ads", ads);
@@ -52,7 +54,7 @@ public class FrontendController {
     public String viewAd(@PathVariable Long id, Model model) {
         Ad ad = adService.getAdById(id);
         // Send ad viewed event
-        producerService.sendEvent("ad_viewed", ad.getId(), ad.getTitle());
+        producerService.sendEvent("ad_viewed", ad.getId(), ad.getTitle(), ad.getCompany(), ad.getCategory());
         model.addAttribute("ad", ad);
         return "ad-detail";
     }

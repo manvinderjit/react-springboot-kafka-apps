@@ -8,15 +8,19 @@ public class AdEvent {
     private Instant timestamp;
     private Long adId;
     private String adTitle;
+    private String adCompany;
+    private String adCategory;
 
     public AdEvent() {}
 
-    public AdEvent(Long id, String eventType, Instant timestamp, Long adId, String adTitle) {
+    public AdEvent(Long id, String eventType, Instant timestamp, Long adId, String adTitle, String adCompany, String adCategory) {
         this.id = id;
         this.eventType = eventType;
         this.timestamp = timestamp;
         this.adId = adId;
         this.adTitle = adTitle;
+        this.adCompany = adCompany;
+        this.adCategory = adCategory;
     }
 
     public Long getId() {
@@ -57,5 +61,21 @@ public class AdEvent {
 
     public void setAdTitle(String adTitle) {
         this.adTitle = adTitle;
+    }
+
+    public String getAdCompany() {
+        return adCompany;
+    }
+
+    public void setAdCompany(String adCompany) {
+        this.adCompany = adCompany;
+    }
+
+    public String getAdCategory() {
+        return adCategory;
+    }
+
+    public void setAdCategory(String adCategory) {
+        this.adCategory = adCategory;
     }
 }

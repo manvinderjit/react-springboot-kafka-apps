@@ -228,16 +228,16 @@
                     <input type="hidden" name="eventType" value="ad_clicked">
                     <input type="hidden" name="adId" th:value="${ad.id}">
                     <input type="hidden" name="adTitle" th:value="${ad.title}">
-                    <button type="submit" class="btn btn-success">🖱️ Click Ad</button>
+                    <button type="submit" class="btn btn-success">Click Ad</button>
                 </form>
                 
-                <a th:href="${ad.targetUrl}" target="_blank" class="btn btn-primary">🔗 Visit Website</a>
+                <a th:href="${ad.targetUrl}" target="_blank" class="btn btn-primary">Visit Website</a>
                 
                 <form style="display: inline;" th:action="@{/ad-event}" method="post">
                     <input type="hidden" name="eventType" value="ad_closed">
                     <input type="hidden" name="adId" th:value="${ad.id}">
                     <input type="hidden" name="adTitle" th:value="${ad.title}">
-                    <button type="submit" class="btn btn-danger">❌ Close Ad</button>
+                    <button type="submit" class="btn btn-danger">Close Ad</button>
                 </form>
             </div>
         </div>
